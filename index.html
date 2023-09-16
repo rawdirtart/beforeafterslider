@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Before and After Slider</title>
+    <style>
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .before-image, .after-image {
+            width: 100%;
+            transition: 0.4s;
+        }
+
+        .before-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: #fff;
+            cursor: ew-resize;
+        }
+    </style>
+</head>
+<body>
+<div class="slider-wrapper">
+    <img src="https://i.imgur.com/RPeksfp.jpg" class="after-image">
+    <div class="before-image" style="width:50%">
+        <img src="https://i.imgur.com/oUUA3Pw.jpg">
+    </div>
+    <div class="slider"></div>
+</div>
+
+<script>
+    const slider = document.querySelector('.slider');
+    const beforeImage = document.querySelector('.before-image');
+
+    let isDragging = false;
+
+    slider.addEventListener('mousedown', (event) => {
+        isDragging = true;
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(event) {
+        if (!isDragging) return;
+        const x = event.pageX - slider.getBoundingClientRect().left;
+        let width = (x + slider.offsetWidth / 2) / sliderWrapper.offsetWidth * 100;
+        width = Math.min(100, Math.max(0, width));
+        beforeImage.style.width = width + '%';
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+</script>
+</body>
+</html>
